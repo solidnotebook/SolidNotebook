@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <script type="text/javascript" src="/SolidNotebook.js"></script>
+        <style type="text/css">
+            /* disable overscroll/bounce */
+            html { overflow: hidden; height: 100%; }
+            body { height: 100%; overflow: auto; }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: rgb(11, 38, 126);
+                text-align: center;
+            }
+            #container {
+                display: inline-block;
+            }
+            .loader-outer {
+                width: 100%;
+                height: 100%;
+            }
+            .loader-inner {
+                background-color: #555;
+                text-align: center;
+                vertical-align: middle;
+                color: #FFF;
+                font: 12px sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+        <script type="text/javascript">
+            var containerWidth  = 600;
+            var containerHeight = 470;
+
+            var container = document.getElementById('container');
+            container.style.width = containerWidth + 'px';
+            container.style.height = containerHeight + 'px';
+
+            const ws = new WebSocket('ws://localhost:8080/path');
+            ws.addEventListener('open', () => {
+                // console.log('the WebSocket is open');
+            });
+            ws.addEventListener('message', (msg) => {
+                const message = JSON.parse(msg.data);
+                if (message.type === 'sample-app-init') {
+                    startSN(message.connectionId);
+                    conn.setColor(message.strokeColor);
+                    return;
+                }
+                if (conn) {
+                    conn.handleInboundMessage(message);
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (conn && (event.keyCode === 82 || event.code === 'KeyR')) {
+                    conn.setMode('rectangle');
+                    conn.setOpacity('0.2');
+                    console.log('Mode: rectangle');
+                } else if (conn && (event.keyCode === 80 || event.code === 'KeyP')) {
+                    conn.setMode('pencil');
+                    conn.setOpacity('1.0');
+                    console.log('Mode: pencil');
+                } else if (conn && (event.keyCode === 90 || event.code === 'KeyZ')) {
+                    conn.undo();
+                }
+            });
+
+            let conn = null;
+            function startSN(connectionId) {
+                if (conn) { return }
+                window.conn = conn = new SN.Connection({
+                    containerId: 'container',
+                    containerSize: { width: containerWidth, height: containerHeight },
+                    strokeWidth: 2.3,
+                    backgroundColor: '#333333',
+                    horizontalPadding: 40,
+                    verticalPadding: 20,
+                    connectionId,
+                    diagrams: [
+                        { width: 800, height: 600, backgroundImage: '/slides/1.jpg' },
+                        { width: 800, height: 600, backgroundImage: '/slides/2.jpg' },
+                        { width: 800, height: 600, backgroundImage: '/slides/3.jpg' },
+                    ],
+                    onOutboundMessage: (message) => {
+                        ws.send(JSON.stringify(message));
+                    },
+                    diagramLoadingStateHTML: `
+                        <table class="loader-outer">
+                            <tr>
+                                <td class="loader-inner">
+                                    Loading...
+                                </td>
+                            </tr>
+                        </table>
+                    `
+                });
+            }
+        </script>
+    </body>
+</html>

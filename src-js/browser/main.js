@@ -99,7 +99,7 @@ this.setBroadcastScroll = function (shouldBroadcastScroll) {
 };
 
 this.setMode = function (mode) {
-    if (!mode.match(/^(pencil|rectangle)$/)) {
+    if (mode && !mode.match(/^(pencil|rectangle)$/)) {
         throwInvalidParamError();
     }
     state__mode = mode;

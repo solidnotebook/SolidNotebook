@@ -22,7 +22,7 @@ var createTopElementForDiagram = function (diagram, diagramIndex, left, top, wid
         var x = event.offsetX;
         var y = event.offsetY;
         var lastPoint = currentItem.points[currentItem.points.length - 1];
-        var distance = Math.sqrt(Math.pow(lastPoint.x - x, 2), Math.pow(lastPoint.y - y, 2));
+        var distance = Math.sqrt(Math.pow(lastPoint.x - x, 2) + Math.pow(lastPoint.y - y, 2));
         if (distance >= 2) {
             addPointToItem(currentItem, event.offsetX, event.offsetY);
             sendEvent('update-item', { item: currentItem });

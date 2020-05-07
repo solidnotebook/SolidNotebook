@@ -146,7 +146,7 @@ this.setBroadcastScroll = function (shouldBroadcastScroll) {
 };
 
 this.setMode = function (mode) {
-    if (!mode.match(/^(pencil|rectangle)$/)) {
+    if (mode && !mode.match(/^(pencil|rectangle)$/)) {
         throwInvalidParamError();
     }
     state__mode = mode;
@@ -200,7 +200,7 @@ var createTopElementForDiagram = function (diagram, diagramIndex, left, top, wid
         var x = event.offsetX;
         var y = event.offsetY;
         var lastPoint = currentItem.points[currentItem.points.length - 1];
-        var distance = Math.sqrt(Math.pow(lastPoint.x - x, 2), Math.pow(lastPoint.y - y, 2));
+        var distance = Math.sqrt(Math.pow(lastPoint.x - x, 2) + Math.pow(lastPoint.y - y, 2));
         if (distance >= 2) {
             addPointToItem(currentItem, event.offsetX, event.offsetY);
             sendEvent('update-item', { item: currentItem });
@@ -395,7 +395,7 @@ var STROKE_MARGIN = 4;
 
 var renderStrokeSVG = function (item, boundingRect) {
     return [
-        '<svg viewBox="0 0 ', boundingRect.width + (2 * STROKE_MARGIN), ' ', boundingRect.height + (2 * STROKE_MARGIN),
+        '<svg style="position: absolute; top: 0; left: 0" viewBox="0 0 ', boundingRect.width + (2 * STROKE_MARGIN), ' ', boundingRect.height + (2 * STROKE_MARGIN),
         '" xmlns="http://www.w3.org/2000/svg/">',
         '<polyline fill="none" stroke-linecap="round" stroke-linejoin="round"',
         ' stroke="', item.color, '"',

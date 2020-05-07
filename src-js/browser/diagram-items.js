@@ -41,7 +41,7 @@ var STROKE_MARGIN = 4;
 
 var renderStrokeSVG = function (item, boundingRect) {
     return [
-        '<svg viewBox="0 0 ', boundingRect.width + (2 * STROKE_MARGIN), ' ', boundingRect.height + (2 * STROKE_MARGIN),
+        '<svg style="position: absolute; top: 0; left: 0" viewBox="0 0 ', boundingRect.width + (2 * STROKE_MARGIN), ' ', boundingRect.height + (2 * STROKE_MARGIN),
         '" xmlns="http://www.w3.org/2000/svg/">',
         '<polyline fill="none" stroke-linecap="round" stroke-linejoin="round"',
         ' stroke="', item.color, '"',

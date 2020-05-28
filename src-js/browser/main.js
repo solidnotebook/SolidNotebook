@@ -27,6 +27,7 @@ var state__opacity = '1.0';
 var state__allowScroll = 1; // fewer bytes than "true"
 var state__broadcastScroll = 1;
 var state__mode = 'pencil';
+var state__touchIdentifier;
 
 // Extract and validate params:
 var containerId = params.containerId;

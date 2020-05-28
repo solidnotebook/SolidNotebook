@@ -5,7 +5,38 @@ var createTopElementForDiagram = function (diagram, diagramIndex, left, top, wid
     setRect(diagramElement, left, top, width, height);
     var currentItem = null;
 
-    diagramElement.addEventListener('mousedown', function (event) {
+    var touchPos = function (touch) {
+        var rect = diagramElement.getBoundingClientRect();
+        return { offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top };
+    };
+
+    diagramElement.addEventListener('touchstart', function (event) {
+        var touch = event.changedTouches[0];
+        if (!state__mode || !touch) { return; }
+        event.preventDefault();
+        state__touchIdentifier = touch.identifier;
+        mousedown(touchPos(touch));
+    }, false);
+
+    var touchStopped = function (event) {
+        for (var i = 0; i < event.changedTouches.length; i++) {
+            if (event.changedTouches[i].identifier === state__touchIdentifier) {
+                onMouseUpOrMouseLeave(touchPos(event.changedTouches[i]));
+            }
+        }
+    };
+
+    diagramElement.addEventListener('touchend', touchStopped, false);
+    diagramElement.addEventListener('touchcancel', touchStopped, false);
+    diagramElement.addEventListener('touchmove', function (event) {
+        for (var i = 0; i < event.changedTouches.length; i++) {
+            if (event.changedTouches[i].identifier === state__touchIdentifier) {
+                mousemove(touchPos(event.changedTouches[i]));
+            }
+        }
+    }, false);
+
+    var mousedown = function (event) {
         var itemType = {
             pencil: 'stroke',
             rectangle: 'rectangle',
@@ -13,9 +44,9 @@ var createTopElementForDiagram = function (diagram, diagramIndex, left, top, wid
         if (itemType) {
             currentItem = createItem(itemType, newId(), diagram, diagramIndex, state__color, state__opacity, width, height, event.offsetX, event.offsetY);
         }
-    });
+    };
 
-    diagramElement.addEventListener('mousemove', function (event) {
+    var mousemove = function (event) {
         if (!currentItem) {
             return;
         }
@@ -28,7 +59,10 @@ var createTopElementForDiagram = function (diagram, diagramIndex, left, top, wid
             sendEvent('update-item', { item: currentItem });
             drawItem(currentItem);
         }
-    });
+    };
+
+    diagramElement.addEventListener('mousedown', mousedown);
+    diagramElement.addEventListener('mousemove', mousemove);
 
     function onMouseUpOrMouseLeave(event) {
         if (!currentItem) {

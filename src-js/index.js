@@ -11,7 +11,11 @@ async function buildJS() {
         'diagram-items.js',
     ].map(filename => path.join(__dirname, 'browser', filename));
     const buffers = await Promise.all(paths.map(path => readFile(path)));
+
+    const upstreamBuffer = await readFile(path.join(__dirname, 'upstream', 'lazysizes.js'));
+
     return [
+        upstreamBuffer.toString('utf-8'),
         '(function () {',
         'function Connection(params) {',
         buffers.map(buf => buf.toString('utf8')).join('\n\n'),

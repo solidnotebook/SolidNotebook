@@ -75,11 +75,12 @@ function startHTTP() {
         const { pathname } = url.parse(req.url);
         const m = pathname.match(/^\/slides\/([0-9]+).jpg$/);
         if (m) {
-            const delay = (m[1] === '2') ? 500 : 1;
             setTimeout(() => {
-                res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-                res.end(fs.readFileSync(path.join(__dirname, 'slides', m[1] + '.jpg')));
-            }, delay);
+              const pageNumber = parseInt(m[1], 10);
+              const filename = ['1', '2', '3'][(pageNumber - 1) % 3] + '.jpg';
+              res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+              res.end(fs.readFileSync(path.join(__dirname, 'slides', filename)));
+            }, 300);
         } else if (pathname === '/') {
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.end(fs.readFileSync(path.join(__dirname, 'client.html')));

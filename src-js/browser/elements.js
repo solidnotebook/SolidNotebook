@@ -118,27 +118,35 @@ diagrams.forEach(function (diagram, diagramIndex) {
     imgElement.onload = function () {
         // TODO event
         content.removeChild(loadingElement);
-        content.appendChild(imgElement);
     };
-    imgElement.src = diagram.backgroundImage;
+
+    var url = diagram.backgroundImage;
+    if ('loading' in HTMLImageElement.prototype) {
+      imgElement.loading = 'lazy';
+      imgElement.src = url;
+    } else {
+      imgElement.setAttribute('data-src', url);
+      imgElement.className = 'lazyload';
+    }
 
     var loadingElement = document.createElement('div');
     loadingElement.innerHTML = diagramLoadingStateHTML;
 
-    var styleImageElement = function (element) {
+    var styleImageElement = function (element, zIndex) {
         element.style.userSelect = 'none';
-        element.style.zIndex = Z_DIAGRAM_IMAGE;
+        element.style.zIndex = zIndex;
         element.style.position = 'absolute';
         setRect(element, left, top, width, height);
     };
 
-    styleImageElement(imgElement);
-    styleImageElement(loadingElement);
+    styleImageElement(loadingElement, Z_DIAGRAM_IMAGE_PLACEHOLDER);
+    styleImageElement(imgElement, Z_DIAGRAM_IMAGE);
 
     diagramViewImages.push(imgElement);
 
     var topElement = createTopElementForDiagram(diagram, diagramIndex, left, top, width, height);
 
+    content.appendChild(imgElement);
     content.appendChild(loadingElement);
     content.appendChild(topElement);
 });

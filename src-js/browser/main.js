@@ -14,8 +14,9 @@ Packed as minification-friendly ES5:
 */
 
 var Z_DIAGRAM_IMAGE = 2;
-var Z_STROKE = 3;
-var Z_DIAGRAM_TOP = 4;
+var Z_DIAGRAM_IMAGE_PLACEHOLDER = 3;
+var Z_STROKE = 4;
+var Z_DIAGRAM_TOP = 5;
 
 var state__numIds = 0;
 var state__numEventsSent = 0;

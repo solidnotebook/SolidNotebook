@@ -35,9 +35,9 @@ SOFTWARE.
 
 
 
-if (!('loading' in HTMLImageElement.prototype)) {
-  lazySizes.init();
-}
+// if (!('loading' in HTMLImageElement.prototype)) {
+lazySizes.init();
+// }
 
 (function () {
 function Connection(params) {
@@ -342,13 +342,13 @@ diagrams.forEach(function (diagram, diagramIndex) {
     };
 
     var url = diagram.backgroundImage;
-    if ('loading' in HTMLImageElement.prototype) {
-      imgElement.loading = 'lazy';
-      imgElement.src = url;
-    } else {
-      imgElement.setAttribute('data-src', url);
-      imgElement.className = 'lazyload';
-    }
+    // if ('loading' in HTMLImageElement.prototype) {
+    //   imgElement.loading = 'lazy';
+    //   imgElement.src = url;
+    // } else {
+    imgElement.setAttribute('data-src', url);
+    imgElement.className = 'lazyload';
+    // }
 
     var loadingElement = document.createElement('div');
     loadingElement.innerHTML = diagramLoadingStateHTML;

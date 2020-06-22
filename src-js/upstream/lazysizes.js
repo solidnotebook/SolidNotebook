@@ -35,6 +35,6 @@ SOFTWARE.
 
 
 
-if (!('loading' in HTMLImageElement.prototype)) {
-  lazySizes.init();
-}
+// if (!('loading' in HTMLImageElement.prototype)) {
+lazySizes.init();
+// }

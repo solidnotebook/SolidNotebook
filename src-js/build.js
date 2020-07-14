@@ -12,8 +12,8 @@ async function main() {
     }
     const minJs = result.code;
 
-    fs.writeFileSync(path.join(__dirname, '..', 'SolidNotebook-0.1.4.js'), js);
-    fs.writeFileSync(path.join(__dirname, '..', 'SolidNotebook-0.1.4.min.js'), minJs);
+    fs.writeFileSync(path.join(__dirname, '..', 'SolidNotebook-0.1.5.js'), js);
+    fs.writeFileSync(path.join(__dirname, '..', 'SolidNotebook-0.1.5.min.js'), minJs);
 }
 
 if (!module.parent) {

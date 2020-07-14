@@ -42,7 +42,7 @@ Press `r` for Rectangle mode, `p` for pencil mode, and `z` to undo. The connecti
 ### Using the library
 
 ```html
-<script src="SolidNotebook-0.1.4.min.js" type="text/javascript"></script>
+<script src="SolidNotebook-0.1.5.min.js" type="text/javascript"></script>
 ```
 
 ```js

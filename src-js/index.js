@@ -28,5 +28,5 @@ async function buildJS() {
 
 module.exports = {
     buildJS,
-    JS_MIN: fs.readFileSync(path.join(__dirname, '..', 'SolidNotebook-0.1.4.min.js'))
+    JS_MIN: fs.readFileSync(path.join(__dirname, '..', 'SolidNotebook-0.1.5.min.js'))
 };

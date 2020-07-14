@@ -4,13 +4,21 @@ var createTopElementForDiagram = function (diagram, diagramIndex, left, top, wid
     diagramElement.style.position = 'absolute';
     setRect(diagramElement, left, top, width, height);
     var currentItem = null;
+    var touchScaleX = 1;
+    var touchScaleY = 1;
 
     var touchPos = function (touch) {
         var rect = diagramElement.getBoundingClientRect();
-        return { offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top };
+        return {
+          offsetX: (touch.clientX - rect.left) * touchScaleX,
+          offsetY: (touch.clientY - rect.top) * touchScaleY
+        };
     };
 
     diagramElement.addEventListener('touchstart', function (event) {
+        var containerRect = ourContainer.getBoundingClientRect();
+        touchScaleX = containerSize_width / containerRect.width;
+        touchScaleY = containerSize_height / containerRect.height;
         var touch = event.changedTouches[0];
         if (!state__mode || !touch) { return; }
         event.preventDefault();
